@@ -1,13 +1,18 @@
-﻿@namespace AdminComponents
+﻿@using System.Text
+@using System.Text.RegularExpressions
+@namespace AdminComponents
 @inject IEditor editor
+@inject IFileUploader fileUploader
+@inject IBlobService blobService
 @inject NavigationManager nav
 
 <textarea @ref="_textareaElement" placeholder="Type here..." style="display: none"></textarea>
 <InputFile @ref="_uploadFileElement" OnChange="@LoadFile" style="display: none" accept="image/*"></InputFile>
 
 @code {
-    ElementReference _textareaElement;
-    InputFile _uploadFileElement = null!;
+    private ElementReference _textareaElement;
+    private InputFile _uploadFileElement = null!;
+    private long maxFileSize = 1024 * 500; // 500KB
 
     [Parameter] public string? Content { get; set; }
 
@@ -19,9 +24,35 @@
         }
     }
 
-    private async Task LoadFile(InputFileChangeEventArgs args) => await Task.CompletedTask;
+    public async Task<string> GetContentAsync()
+    {
+        var content = await editor.GetEditorValueAsync();
 
-    protected async Task LoadImageFiles(InputFileChangeEventArgs args) => await Task.CompletedTask;
+        var imgsMatches = StringHelper.MarkdownImgTempGeneratedRegex().Matches(content);
 
-    public async Task<string> GetContentAsync() => await Task.FromResult("");
+        if (imgsMatches.Count > 0)
+        {
+            var contentStringBuilder = new StringBuilder(content);
+
+            foreach (Match match in imgsMatches)
+            {
+                var blobUrl = match.Groups[1].Value;
+
+                var res = await blobService.BlobUrlToBase64(blobUrl);
+
+                contentStringBuilder.Replace(blobUrl, res);
+            }
+
+            content = contentStringBuilder.ToString();
+        }
+
+        return content;
+    }
+
+    private async Task LoadFile(InputFileChangeEventArgs args)
+    {
+        var filename = args.File.Name;
+        var url = await fileUploader.UploadFile(args.File, maxFileSize);
+        await editor.WriteFrontFileTempAsync(filename, url);
+    }
 }

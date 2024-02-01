@@ -10,7 +10,9 @@ public static class Extensions
 {
     public static void AddServices(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddHttpClient<IBlogClient, BlogClient>(client => client.BaseAddress = new Uri(configuration["ApiUrl"]!))
+        services
+            .AddHttpClient()
+            .AddHttpClient<IBlogClient, BlogClient>(client => client.BaseAddress = new Uri(configuration["ApiUrl"]!))
             .AddHttpMessageHandler<HttpClientInterceptor>();
 
         services.AddScoped<HttpClientInterceptor>();
