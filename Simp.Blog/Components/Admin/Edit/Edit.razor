@@ -1,0 +1,47 @@
+﻿@page "/admin/blog/{Id:int}"
+@rendermode InteractiveServer
+@inject NavigationManager Navigation
+
+<PageTitle>@(Id > 0 ? "Edit" : "New blog")</PageTitle>
+
+<div class="px-3 background-image">
+    <div class="row d-flex align-items-center py-3">
+        <div class="col-md-6">
+            <button class="btn btn-primary" @onclick="Publish">Publish</button>
+            <button class="btn btn-secondary" @onclick="Save">Save</button>
+        </div>
+    </div>
+    <div class="row py-2">
+        <div class="col-md-12">
+            <div class="form-group">
+                <input class="form-control cs-input fs-4" placeholder="Post title" @bind-value="title" />
+            </div>
+        </div>
+        <div class="col-md-12 mt-1">
+            <div class="form-group">
+                <input class="form-control cs-input fs-6" placeholder="Description" @bind-value="description" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-3">
+    <div class="col-md-12">
+        <div class="form-group">
+            <AdminComponents.EasyEditorComponent Content="@content"></AdminComponents.EasyEditorComponent>
+        </div>
+    </div>
+</div>
+
+@code {
+
+    [Parameter] public int? Id { get; set; }
+
+    string? title = null;
+    string? description = null;
+    string? content;
+
+    async Task Publish() => await Task.CompletedTask;
+
+    async Task Save() => await Task.CompletedTask;
+}

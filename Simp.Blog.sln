@@ -7,6 +7,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Simp.Blog", "Simp.Blog\Simp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Simp.Blog.Service", "Simp.Blog.Service\Simp.Blog.Service.csproj", "{BA09FBEF-08C5-4FB2-9650-D392B63A0271}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Simp.Modules.Blogs.Contracts", "..\simp\src\Modules\Blogs\Simp.Modules.Blogs.Contracts\Simp.Modules.Blogs.Contracts.csproj", "{F90F3713-1106-4A3A-8429-32570533554E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simp.Blog.Service.Abstraction", "Simp.Blog.Service.Abstraction\Simp.Blog.Service.Abstraction.csproj", "{C973829D-012B-44D3-9149-CF4E5A7586F0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{BA09FBEF-08C5-4FB2-9650-D392B63A0271}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BA09FBEF-08C5-4FB2-9650-D392B63A0271}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BA09FBEF-08C5-4FB2-9650-D392B63A0271}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F90F3713-1106-4A3A-8429-32570533554E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F90F3713-1106-4A3A-8429-32570533554E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F90F3713-1106-4A3A-8429-32570533554E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F90F3713-1106-4A3A-8429-32570533554E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C973829D-012B-44D3-9149-CF4E5A7586F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C973829D-012B-44D3-9149-CF4E5A7586F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C973829D-012B-44D3-9149-CF4E5A7586F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C973829D-012B-44D3-9149-CF4E5A7586F0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

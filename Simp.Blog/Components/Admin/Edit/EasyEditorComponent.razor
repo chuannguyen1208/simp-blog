@@ -1,0 +1,27 @@
+﻿@namespace AdminComponents
+@inject IEditor editor
+@inject NavigationManager nav
+
+<textarea @ref="_textareaElement" placeholder="Type here..." style="display: none"></textarea>
+<InputFile @ref="_uploadFileElement" OnChange="@LoadFile" style="display: none" accept="image/*"></InputFile>
+
+@code {
+    ElementReference _textareaElement;
+    InputFile _uploadFileElement = null!;
+
+    [Parameter] public string? Content { get; set; }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await editor.LoadEditorAsync(_textareaElement, _uploadFileElement.Element!.Value);
+        }
+    }
+
+    private async Task LoadFile(InputFileChangeEventArgs args) => await Task.CompletedTask;
+
+    protected async Task LoadImageFiles(InputFileChangeEventArgs args) => await Task.CompletedTask;
+
+    public async Task<string> GetContentAsync() => await Task.FromResult("");
+}

@@ -6,4 +6,9 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Simp.Blog.Service.Abstraction\Simp.Blog.Service.Abstraction.csproj" />
+    <ProjectReference Include="..\Simp.Blog.Service\Simp.Blog.Service.csproj" />
+  </ItemGroup>
+
 </Project>
