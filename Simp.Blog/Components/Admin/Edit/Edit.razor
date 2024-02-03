@@ -1,53 +1,109 @@
-﻿@page "/admin/blog/{Id:int}"
+﻿@attribute [Route(AdminRoutes.BlogsEdit)]
+@layout AdminLayout
 @rendermode InteractiveServer
 @inject IBlogClient blogClient
 @inject NavigationManager nav
 
-<PageTitle>@(Id > 0 ? "Edit" : "New blog")</PageTitle>
+<PageTitle>Edit blog</PageTitle>
 
-<div class="px-3 background-image">
-    <div class="row d-flex align-items-center py-3">
-        <div class="col-md-6">
-            <button class="btn btn-primary" @onclick="Save">Save</button>
+<EditForm Model="@this" OnValidSubmit="Save">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="px-3 background-image">
+        <div class="row d-flex align-items-center py-3">
+            <div class="col-md-6">
+                <button class="btn btn-primary" type="submit">Save</button>
+            </div>
+        </div>
+        <div class="row py-2">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <input class="form-control cs-input fs-4" placeholder="Post title" @bind-value="Title" />
+                </div>
+            </div>
+            <div class="col-md-12 mt-1">
+                <div class="form-group">
+                    <input class="form-control cs-input fs-6" placeholder="Description" @bind-value="Description" />
+                </div>
+            </div>
         </div>
     </div>
-    <div class="row py-2">
+
+    <div class="row mt-3">
         <div class="col-md-12">
             <div class="form-group">
-                <input class="form-control cs-input fs-4" placeholder="Post title" @bind-value="title" />
-            </div>
-        </div>
-        <div class="col-md-12 mt-1">
-            <div class="form-group">
-                <input class="form-control cs-input fs-6" placeholder="Description" @bind-value="description" />
+                <AdminComponents.EasyEditorComponent @ref="_editor" Content="@Content"></AdminComponents.EasyEditorComponent>
             </div>
         </div>
     </div>
-</div>
+</EditForm>
 
-<div class="row mt-3">
-    <div class="col-md-12">
-        <div class="form-group">
-            <AdminComponents.EasyEditorComponent @ref="_editor" Content="@content"></AdminComponents.EasyEditorComponent>
-        </div>
-    </div>
-</div>
+
 
 @code {
-
-    [Parameter] public int? Id { get; set; }
+    [Parameter] public Guid Id { get; set; }
 
     AdminComponents.EasyEditorComponent _editor = default!;
 
-    string title = string.Empty;
-    string description = string.Empty;
-    string content = string.Empty;
+    [Required(ErrorMessage = "Title is required")]
+    public string Title { get; set; } = string.Empty;
+
+    [Required(ErrorMessage = "Description is required")]
+    public string Description { get; set; } = string.Empty;
+
+    public string Content { get; set; } = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Console.WriteLine(Id);
+
+        if (Id != Guid.Empty)
+        {
+            var blog = await blogClient.GetOneAsync(Id);
+            Title = blog.Title;
+            Description = blog.Description;
+            Content = blog.Content;
+        }
+    }
 
 
     async Task Save()
     {
-        var editorContent = await _editor.GetContentAsync();
-        var request = new BlogRequest(title, description, editorContent);
-        await blogClient.CreateAsync(request);
+        if(ValidateForm())
+        {
+            var editorContent = await _editor.GetContentAsync();
+            var request = new BlogRequest(Title, Description, editorContent);
+
+            if (Id == Guid.Empty)
+            {
+                await blogClient.CreateAsync(request);
+            }
+            else
+            {
+                await blogClient.UpdateAsync(Id, request);
+            }
+
+        }
+    }
+
+    bool ValidateForm()
+    {
+        var validationContext = new ValidationContext(this);
+        var validationResults = new List<ValidationResult>();
+
+        if (!Validator.TryValidateObject(this, validationContext, validationResults, true))
+        {
+            foreach (var validationResult in validationResults)
+            {
+                // Handle validation errors (e.g., display error messages)
+                // For example, you can use a component to display validation errors:
+                // errorMessage = validationResult.ErrorMessage;
+            }
+
+            return false;
+        }
+
+        return true;
     }
 }

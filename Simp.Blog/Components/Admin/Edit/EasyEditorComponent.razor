@@ -21,6 +21,7 @@
         if (firstRender)
         {
             await editor.LoadEditorAsync(_textareaElement, _uploadFileElement.Element!.Value);
+            await editor.SetEditorValueAsync(Content ?? "");
         }
     }
 

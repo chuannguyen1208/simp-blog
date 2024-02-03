@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Simp.Blog.Service", "Simp.B
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Simp.Modules.Blogs.Contracts", "..\simp\src\Modules\Blogs\Simp.Modules.Blogs.Contracts\Simp.Modules.Blogs.Contracts.csproj", "{F90F3713-1106-4A3A-8429-32570533554E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simp.Blog.Service.Abstraction", "Simp.Blog.Service.Abstraction\Simp.Blog.Service.Abstraction.csproj", "{C973829D-012B-44D3-9149-CF4E5A7586F0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Simp.Blog.Service.Abstraction", "Simp.Blog.Service.Abstraction\Simp.Blog.Service.Abstraction.csproj", "{C973829D-012B-44D3-9149-CF4E5A7586F0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

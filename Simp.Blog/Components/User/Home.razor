@@ -1,9 +1,44 @@
-﻿@page "/"
+﻿@attribute [Route(UserRoutes.Base)]
+@attribute [Route(UserRoutes.Blogs)]
+
+@inject IBlogClient blogClient
 
 <PageTitle>Home page</PageTitle>
 
-<h3>Home</h3>
+<div class="row">
+    @foreach (var blog in blogs)
+    {
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <img src="img/cover.jpg" class="card-img-top" alt="@blog.Title">
+                <div class="card-body">
+                    <h5 class="card-title">@blog.Title</h5>
+                    <p class="card-text">@blog.Description</p>
+                    <div class="d-flex justify-content-between align-items-center card-bottom">
+                        <span>
+                            <i class="bi-alarm me-1"></i>
+                            Author
+                        </span>
+                        <span>
+                            <i class="bi bi-calendar2 me-1"></i>
+                            Created time
+                        </span>
+                        <a type="button" class="btn btn-link btn-sm text-decoration-none" href="@UserRoutes.ToBlogsDetail(blog.Id)">
+                            Read
+                            <i class="bi bi-arrow-right ms-1"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
 
 @code {
+    IEnumerable<BlogResponse> blogs = [];
 
+    protected override async Task OnInitializedAsync()
+    {
+        blogs = await blogClient.GetManyAsync();
+    }
 }

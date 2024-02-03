@@ -1,0 +1,60 @@
+﻿@attribute [Route(AdminRoutes.Blogs)]
+@layout AdminLayout
+@rendermode InteractiveServer
+@inject IBlogClient blogClient
+
+
+<ul class="list-group">
+    <li class="list-group-item border-0">
+        <div class="d-flex align-items-center">
+            <a class="btn btn-primary btn-md rounded-pill px-4 py-2 btn-new-post" href="@AdminRoutes.ToBlogsCreate()">New Post</a>
+        </div>
+    </li>
+    @foreach (var blog in blogs)
+    {
+        <li class="list-group-item border-0">
+            <div class="form-check d-flex align-items-center justify-content-between">
+                <div style="width: 200px">
+                    <input class="form-check-input" type="checkbox">
+                    <label class="form-check-label ms-3">
+                        @blog.Title
+                    </label>
+                </div>
+                <div>
+                    <span>Created time</span>
+                </div>
+                <div>
+                    <a class="nav-item" href="@blog.Id">
+                        <i class="bi bi-eye fs-5" />
+                    </a>
+                    <a class="nav-item ms-3" href="@AdminRoutes.ToBlogsEdit(blog.Id)">
+                        <i class="bi bi-pencil fs-5" />
+                    </a>
+                    <a class="nav-item ms-3 cursor-pointer" @onclick="(e) => Delete(blog.Id)">
+                        <i class="bi bi-trash fs-5" />
+                    </a>
+                </div>
+            </div>
+        </li>
+    }
+</ul>
+
+@code {
+    IEnumerable<BlogResponse> blogs = [];
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadData();
+    }
+
+    async Task Delete(Guid id)
+    {
+        await blogClient.DeleteAsync(id);
+        await LoadData();
+    }
+
+    async Task LoadData()
+    {
+        blogs = await blogClient.GetManyAsync();
+    }
+}

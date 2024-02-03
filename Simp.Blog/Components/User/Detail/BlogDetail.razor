@@ -1,0 +1,40 @@
+﻿@attribute [Route(UserRoutes.BlogsDetail)]
+@inject IBlogClient blogClient
+
+<div class="bg-img" style="height: 250px"></div>
+<div class="d-flex justify-content-center position-relative">
+    @if (blog is null)
+    {
+        <span>Loading...</span>
+    }
+    else
+    {
+        <div class="p-5 rounded-3 border detail-content">
+            <h2>@blog.Title</h2>
+            <div class="d-flex mt-3 opacity-75">
+                <div>
+                    <div class="fs-12">Author</div>
+                    <div class="fs-14">Chuan.Nguyen</div>
+                </div>
+                <div class="ms-5">
+                    <div class="fs-12">Pulished</div>
+                    <div class="fs-14">Created time</div>
+                </div>
+                <div></div>
+            </div>
+            <div class="mt-3">@blog.Description</div>
+            <div class="mt-5">@((MarkupString)blog.Content)</div>
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter] public Guid Id { get; set; }
+
+    BlogResponse? blog;
+
+    protected override async Task OnInitializedAsync()
+    {
+        blog = await blogClient.GetOneAsync(Id);
+    }
+}
