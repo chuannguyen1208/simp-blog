@@ -2,8 +2,10 @@
 using Microsoft.Extensions.DependencyInjection;
 using Simp.Blog.Service.Abstraction.Blogs;
 using Simp.Blog.Service.Abstraction.Editors;
+using Simp.Blog.Service.Abstraction.Toasts;
 using Simp.Blog.Service.Blogs;
 using Simp.Blog.Service.Editors;
+using Simp.Blog.Service.Toasts;
 
 namespace Simp.Blog.Service;
 public static class Extensions
@@ -17,5 +19,6 @@ public static class Extensions
 
         services.AddScoped<HttpClientInterceptor>();
         services.AddScoped<IEditor, EditorInterop>();
+        services.AddScoped<IToast, ToastInterop>();
     }
 }
